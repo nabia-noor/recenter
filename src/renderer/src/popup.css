@@ -1,0 +1,185 @@
+:root {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: #302b46;
+  background: #f7f5fc;
+  font-synthesis: none;
+  -webkit-font-smoothing: antialiased;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+.popup-shell {
+  min-height: 100vh;
+  padding: 24px 32px 20px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse at 50% 30%, #eee6ff 0%, transparent 60%), #faf8ff;
+  border: 1px solid #ddd3f2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.popup-brand {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 650;
+  text-align: left;
+  -webkit-app-region: drag;
+  user-select: none;
+}
+.brand-mark {
+  display: grid;
+  place-items: center;
+  width: 27px;
+  height: 27px;
+  border-radius: 9px;
+  background: #7b5ad5;
+  color: white;
+  margin-right: 8px;
+  font-size: 21px;
+}
+.popup-dot {
+  color: #9977dc;
+}
+.due-badge {
+  margin-left: auto;
+  padding: 5px 8px;
+  border-radius: 6px;
+  background: #eee7fa;
+  color: #9879c7;
+  font-size: 8px;
+  letter-spacing: 1.4px;
+}
+.popup-bell {
+  margin: 22px 0 14px;
+  display: grid;
+  place-items: center;
+  width: 76px;
+  height: 76px;
+  color: #9471d5;
+  background: #f8f4ff;
+  border: 1px solid #e6dcf6;
+  border-radius: 25px;
+  box-shadow: 0 8px 28px #8664b91a;
+  transform: rotate(-6deg);
+  flex-shrink: 0;
+}
+.popup-eyebrow {
+  margin: 0 0 12px;
+  font-size: 9px;
+  letter-spacing: 1.8px;
+  font-weight: 650;
+  color: #a28ab9;
+}
+.popup-copy {
+  max-height: 100px;
+  overflow-y: auto;
+  width: 100%;
+  padding: 0 4px;
+}
+h1 {
+  font-size: 26px;
+  letter-spacing: -0.8px;
+  line-height: 1.3;
+  margin: 0;
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+.popup-note {
+  font-size: 12px;
+  color: #94869f;
+  line-height: 1.6;
+  margin: 8px 0 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.popup-instruction {
+  font-size: 11px;
+  color: #a396af;
+  margin: 15px 0 20px;
+}
+.hold-button {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  padding: 17px 12px;
+  color: white;
+  background: #7a59cf;
+  border: 1px solid #7352c4;
+  border-radius: 13px;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  font:
+    600 13px "Segoe UI",
+    sans-serif;
+  box-shadow: 0 5px 14px #7650ca24;
+  flex-shrink: 0;
+}
+.hold-button:hover {
+  background: #704bc8;
+}
+.hold-button:focus-visible {
+  outline: 3px solid #c4acef;
+  outline-offset: 3px;
+}
+.hold-button:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+.hold-fill {
+  position: absolute;
+  background: #ac8ce955;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+.hold-label {
+  position: relative;
+}
+.hold-progress {
+  height: 4px;
+  margin-top: 10px;
+  width: 100%;
+  background: #eae1f6;
+  border-radius: 4px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.hold-progress > span {
+  display: block;
+  height: 100%;
+  background: #aa8adf;
+}
+.popup-hint {
+  font-size: 10px;
+  color: #aa9bb9;
+  margin: 10px 0 19px;
+}
+.popup-error {
+  font-size: 10px;
+  color: #a14d6a;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+.popup-footer {
+  margin-top: auto;
+  color: #a99cb8;
+  font-size: 9px;
+  padding-top: 10px;
+}
+.footer-dot {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background: #b6a2d3;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+}

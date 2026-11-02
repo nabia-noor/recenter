@@ -1,0 +1,63 @@
+# Dependencies and generated outputs (build/ contains required icon assets).
+node_modules/
+out/
+release/
+*.log
+.DS_Store
+
+# Local environment and credentials; only sanitized examples may be shared.
+.env
+.env.*
+!.env.example
+!.env.*.example
+.npmrc
+.netrc
+.aws/
+.ssh/
+/credentials/
+/secrets/
+
+# Signing certificates, private keys, and keystores.
+*.pfx
+*.p12
+*.pem
+*.key
+*.cer
+*.crt
+*.der
+*.jks
+*.keystore
+*.mobileprovision
+id_rsa
+id_ed25519
+id_ecdsa
+
+# Local databases, journals, reminder exports, and migration backups.
+*.db
+*.db-*
+*.sqlite
+*.sqlite-*
+*.sqlite3
+*.sqlite3-*
+personal-reminders.json*
+reminders-backup*.json
+*.bak
+*.backup
+
+# Local Electron profiles and copied runtime data (never application source).
+/userData/
+/sessionData/
+/profiles/
+/profile/
+/user-data/
+/session-data/
+/local-profiles/
+/app-data/
+/local-data/
+/recenter-data/
+/reminders-data/
+/Local Storage/
+/Session Storage/
+/Cache/
+/GPUCache/
+/Network/
