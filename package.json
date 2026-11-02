@@ -35,6 +35,7 @@
     "afterPack": "scripts/windows-metadata.cjs",
     "appId": "com.reminders.desktop",
     "productName": "Recenter",
+    "copyright": "Copyright (c) 2026 Nabia Noor",
     "directories": {
       "output": "release/recenter"
     },
@@ -43,7 +44,8 @@
       "out/preload/**/*",
       "out/renderer/**/*",
       "!**/popup-preview.png",
-      "package.json"
+      "package.json",
+      "LICENSE"
     ],
     "extraResources": [
       {

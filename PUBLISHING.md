@@ -5,7 +5,7 @@ Recenter. The existing version is **0.1.0**; choose the intended public release
 version before distribution. No publisher, certificate, or license is invented.
 The author is intentionally unset. A pre-signing Windows packaging hook clears
 Electron's inherited vendor metadata rather than attributing Recenter to that
-vendor. Supply the real owner before the public release.
+vendor. Configure the publisher details before the public release.
 
 ## Build Windows x64
 
@@ -27,9 +27,32 @@ again to verify an existing installer. Only its unique temporary extraction
 directory is removed; existing app data and preview/source assets are untouched.
 
 Packaging includes only `out/main`, `out/preload`, `out/renderer` and application
-metadata, with an explicit preview exclusion. `build/` remains versionable for
-the required icon assets. Interactive test screenshots are written into their
+metadata and the root `LICENSE`, with an explicit preview exclusion. `build/`
+remains versionable for the required icon assets. Interactive test screenshots are written into their
 disposable profiles rather than build output.
+
+The project `LICENSE` is explicitly bundled at the root of `resources/app.asar`.
+Electron-builder retains the root package's `"license": "MIT"` metadata.
+Verification requires the complete bundled license to match the source file,
+including `Copyright (c) 2026 Nabia Noor`, and checks the packaged name/version.
+Windows executable copyright metadata uses the same confirmed notice; publisher
+and support contact details remain unset.
+No installer EULA or application UI is added by bundling the license.
+
+When replacing an existing installer, retain it and build a candidate first:
+
+```powershell
+npm.cmd run icons
+npm.cmd run build
+npx --no-install electron-builder --win nsis --x64 --publish never '--config.nsis.artifactName=Recenter-Setup-0.1.0-x64-candidate.exe'
+npm.cmd run verify:installer -- release/recenter/Recenter-Setup-0.1.0-x64-candidate.exe
+```
+
+Run the unit, desktop (including opt-in interactions), and isolated installation
+checks before promoting the candidate to the standard installer filename.
+Keep a backup of the preceding verified installer. Packaging or verification
+source changes need a reviewed Git commit before tagging/publishing a release;
+building a candidate does not commit or push them automatically.
 
 Run commands from the project directory using Node.js 24 LTS. The default
 desktop tests are non-interactive. To additionally exercise notification wiring

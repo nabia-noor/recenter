@@ -12,6 +12,7 @@ function validateRuntimeFiles(entries) {
   );
   for (const required of [
     "package.json",
+    "LICENSE",
     "out/main/index.js",
     "out/preload/index.js",
     "out/renderer/index.html",
@@ -25,17 +26,53 @@ function validateRuntimeFiles(entries) {
       `Preview screenshot packaged: ${file}`,
     );
     assert.ok(
-      file === "package.json" || /^out\/(main|preload|renderer)\//.test(file),
+      file === "package.json" ||
+        file === "LICENSE" ||
+        /^out\/(main|preload|renderer)\//.test(file),
       `Unexpected packaged file: ${file}`,
     );
     assert.ok(
-      !/(^|\/)(?:\.env(?:\..*)?|personal-reminders\.json[^/]*|[^/]*\.(?:db|sqlite3?|pfx|p12|pem|key))$/i.test(
+      !/(^|\/)(?:\.env(?:\..*)?|personal-reminders\.json[^/]*|[^/]*\.(?:db(?:-[^/]*)?|sqlite3?(?:-[^/]*)?|pfx|p12|pem|key|log|bak|backup))$/i.test(
         file,
       ),
       `Local data or credentials packaged: ${file}`,
     );
   }
   return files;
+}
+
+function validateReleaseLicense(
+  licenseText,
+  packagedMetadata,
+  projectMetadata,
+  expectedLicense,
+) {
+  assert.equal(
+    licenseText,
+    expectedLicense,
+    "Packaged LICENSE differs from the project's LICENSE",
+  );
+  assert.ok(
+    licenseText.split(/\r?\n/).includes("Copyright (c) 2026 Nabia Noor"),
+    "Confirmed copyright notice is missing",
+  );
+  assert.ok(
+    licenseText.startsWith("MIT License\n") ||
+      licenseText.startsWith("MIT License\r\n"),
+    "Expected the MIT License",
+  );
+  assert.equal(projectMetadata.license, "MIT", "Project license must be MIT");
+  assert.equal(packagedMetadata.license, "MIT", "Packaged license must be MIT");
+  assert.equal(
+    packagedMetadata.name,
+    projectMetadata.name,
+    "Packaged project name differs",
+  );
+  assert.equal(
+    packagedMetadata.version,
+    projectMetadata.version,
+    "Packaged version differs",
+  );
 }
 
 function archiveFiles(node, prefix = "") {
@@ -96,6 +133,18 @@ async function verifyInstaller(input) {
     const files = validateRuntimeFiles(
       archiveFiles(asar.getRawHeader(archives[0]).header),
     );
+    const licenseText = asar
+      .extractFile(archives[0], "LICENSE")
+      .toString("utf8");
+    const packagedMetadata = JSON.parse(
+      asar.extractFile(archives[0], "package.json").toString("utf8"),
+    );
+    validateReleaseLicense(
+      licenseText,
+      packagedMetadata,
+      metadata,
+      fs.readFileSync(path.join(root, "LICENSE"), "utf8"),
+    );
     const unpacked = path.join(output, "win-unpacked/resources/app.asar");
     assert.equal(
       digest(archives[0]),
@@ -107,6 +156,10 @@ async function verifyInstaller(input) {
       runtimeFiles: files.length,
       previewAbsent: true,
       matchesUnpacked: true,
+      license: packagedMetadata.license,
+      version: packagedMetadata.version,
+      copyright: "Copyright (c) 2026 Nabia Noor",
+      licenseMatchesProject: true,
       sha256: digest(installer),
     };
     console.log(JSON.stringify(result, null, 2));
@@ -134,7 +187,11 @@ async function verifyInstaller(input) {
   }
 }
 
-module.exports = { validateRuntimeFiles, verifyInstaller };
+module.exports = {
+  validateRuntimeFiles,
+  validateReleaseLicense,
+  verifyInstaller,
+};
 if (require.main === module)
   verifyInstaller(process.argv[2]).catch((error) => {
     console.error(error);

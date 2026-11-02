@@ -198,6 +198,8 @@ if (!process.versions.electron) {
             await set('#reminder-repeat', 'daily');
             await set('#reminder-note', 'Saved locally');
             await submit();
+            // Disk persistence and the following React render can exceed one tick.
+            for (let i=0; i<100 && (query('dialog').open || query('.personal-card h3')?.textContent !== 'Smoke reminder'); i++) await wait();
             check(!query('dialog').open, 'Save did not close dialog');
             check(query('.personal-card h3').textContent === 'Smoke reminder', 'New card missing');
             check(query('.personal-card .reminder-details').textContent.includes('Daily'), 'Repeat label missing');
@@ -219,6 +221,7 @@ if (!process.versions.electron) {
             await set('#reminder-time', '17:45');
             await set('#reminder-repeat', 'weekly');
             await submit();
+            for (let i=0; i<100 && query('.personal-card h3')?.textContent !== 'Edited reminder'; i++) await wait();
             check(query('.personal-card h3').textContent === 'Edited reminder', 'Edit not displayed');
             check(query('.personal-card .reminder-details').textContent.includes('Weekly'), 'Edit repeat not displayed');
             const stored = (await window.reminders.initialize(null, false)).reminders[0];
@@ -231,6 +234,7 @@ if (!process.versions.electron) {
             check(query('.personal-card'), 'Cancel deleted reminder');
             await click('[aria-label="Delete Edited reminder"]');
             await click('.danger-button');
+            for (let i=0; i<100 && (query('.personal-card') || !query('.empty-state')); i++) await wait();
             check(!query('.personal-card') && query('.empty-state'), 'Delete did not restore empty state');
             check((await window.reminders.initialize(null, false)).reminders.length === 0, 'Delete not persisted');
           } else if (phase === 'verify-empty') {

@@ -137,7 +137,8 @@ app.on("web-contents-created", (_event, contents) => {
             Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,value);
             input.dispatchEvent(new Event('input',{bubbles:true})); await wait();
           }
-          query('form').requestSubmit(); await wait();
+          query('form').requestSubmit();
+          for(let i=0;i<100 && (query('dialog').open || document.querySelectorAll('.personal-card').length !== 2);i++) await wait();
           check(!query('dialog').open && document.querySelectorAll('.personal-card').length === 2, 'Create after Retry failed');
         })()`);
       } else if (phase === "verify-recovery") {
